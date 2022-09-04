@@ -4,10 +4,6 @@ Twitter-like API
 ## Entity Relationship Diagram
 ![Spring Assessment ERD](https://user-images.githubusercontent.com/12191780/187277149-6af53d9e-0e1b-4f72-ae84-357ceb271a5d.png)
 
-
-This ERD represents the database that students will create for this project. Students should only create three classes, `User`, `Tweet`, and `Hashtag`, annotated with `@Entity`. There are, however, two additional classes that students will need to create for this project: `Credentials` and `Profile`. These two classes will be annotated with `@Embeddable` and will be used inside of the `User` entity class with the `@Embedded` annotation. This allows us to maintain credentials and profile as seperate objects in Java while still being stored in just one table in the database.
-
-
 ## API Data Types
 The semantics of the operations exposed by the API endpoints themselves are discussed in the following section, but in this section, the API data model is defined and the conceptual model for the application is explained in some depth. Additionally, some hints and constraints for the database model are discussed here.
 
