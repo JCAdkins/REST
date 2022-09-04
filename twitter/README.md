@@ -7,7 +7,6 @@ Twitter-like API
 
 This ERD represents the database that students will create for this project. Students should only create three classes, `User`, `Tweet`, and `Hashtag`, annotated with `@Entity`. There are, however, two additional classes that students will need to create for this project: `Credentials` and `Profile`. These two classes will be annotated with `@Embeddable` and will be used inside of the `User` entity class with the `@Embedded` annotation. This allows us to maintain credentials and profile as seperate objects in Java while still being stored in just one table in the database.
 
-**IMPORTANT:** The `User` entity will also need to use an `@Table(name=<newName>)` annotation to give its table a different name as `user` is a reserved keyword in PostgreSQL.
 
 ## API Data Types
 The semantics of the operations exposed by the API endpoints themselves are discussed in the following section, but in this section, the API data model is defined and the conceptual model for the application is explained in some depth. Additionally, some hints and constraints for the database model are discussed here.
@@ -120,9 +119,9 @@ Retrieves all active (non-deleted) users as an array.
 ```
 
 ### `POST    users`
-Creates a new user. If any required fields are missing or the `username` provided is already taken, an error should be sent in lieu of a response.
+Creates a new user. If any required fields are missing or the `username` provided is already taken, an error will be sent in lieu of a response.
 
-If the given credentials match a previously-deleted user, re-activate the deleted user instead of creating a new one.
+
 
 #### Request
 ```javascript
@@ -138,7 +137,7 @@ If the given credentials match a previously-deleted user, re-activate the delete
 ```
 
 ### `GET     users/@{username}`
-Retrieves a user with the given username. If no such user exists or is deleted, an error should be sent in lieu of a response.
+Retrieves a user with the given username. If no such user exists or is deleted, an error will be sent in lieu of a response.
 
 #### Response
 ```javascript
@@ -147,7 +146,7 @@ Retrieves a user with the given username. If no such user exists or is deleted, 
 
 
 ### `PATCH   users/@{username}`
-Updates the profile of a user with the given username. If no such user exists, the user is deleted, or the provided credentials do not match the user, an error should be sent in lieu of a response. In the case of a successful update, the returned user should contain the updated data.
+Updates the profile of a user with the given username. If no such user exists, the user is deleted, or the provided credentials do not match the user, an error will be sent in lieu of a response. In the case of a successful update, the returned user will contain the updated data.
 
 #### Request
 ```javascript
@@ -163,9 +162,8 @@ Updates the profile of a user with the given username. If no such user exists, t
 ```
 
 ### `DELETE  users/@{username}`
-"Deletes" a user with the given username. If no such user exists or the provided credentials do not match the user, an error should be sent in lieu of a response. If a user is successfully "deleted", the response should contain the user data prior to deletion.
+"Deletes" a user with the given username. If no such user exists or the provided credentials do not match the user, an error will be sent in lieu of a response. If a user is successfully "deleted", the response will contain the user data prior to deletion.
 
-**IMPORTANT:** This action should not actually drop any records from the database! Instead, develop a way to keep track of "deleted" users so that if a user is re-activated, all of their tweets and information are restored.
 
 #### Request
 ```javascript
@@ -178,7 +176,7 @@ Updates the profile of a user with the given username. If no such user exists, t
 ```
 
 ### `POST    users/@{username}/follow`
-Subscribes the user whose credentials are provided by the request body to the user whose username is given in the url. If there is already a following relationship between the two users, no such followable user exists (deleted or never created), or the credentials provided do not match an active user in the database, an error should be sent as a response. If successful, no data is sent.
+Subscribes the user whose credentials are provided by the request body to the user whose username is given in the url. If there is already a following relationship between the two users, no such followable user exists (deleted or never created), or the credentials provided do not match an active user in the database, an error will be sent as a response. If successful, no data is sent.
 
 #### Request
 ```javascript
@@ -186,7 +184,7 @@ Subscribes the user whose credentials are provided by the request body to the us
 ```
 
 ### `POST    users/@{username}/unfollow`
-Unsubscribes the user whose credentials are provided by the request body from the user whose username is given in the url. If there is no preexisting following relationship between the two users, no such followable user exists (deleted or never created), or the credentials provided do not match an active user in the database, an error should be sent as a response. If successful, no data is sent.
+Unsubscribes the user whose credentials are provided by the request body from the user whose username is given in the url. If there is no preexisting following relationship between the two users, no such followable user exists (deleted or never created), or the credentials provided do not match an active user in the database, an error will be sent as a response. If successful, no data is sent.
 
 #### Request
 ```javascript
@@ -194,7 +192,7 @@ Unsubscribes the user whose credentials are provided by the request body from th
 ```
 
 ### `GET     users/@{username}/feed`
-Retrieves all (non-deleted) tweets authored by the user with the given username, as well as all (non-deleted) tweets authored by users the given user is following. This includes simple tweets, reposts, and replies. The tweets should appear in reverse-chronological order. If no active user with that username exists (deleted or never created), an error should be sent in lieu of a response.
+Retrieves all (non-deleted) tweets authored by the user with the given username, as well as all (non-deleted) tweets authored by users the given user is following. This includes simple tweets, reposts, and replies. The tweets appear in reverse-chronological order. If no active user with that username exists (deleted or never created), an error will be sent in lieu of a response.
 
 #### Response
 ```javascript
@@ -202,7 +200,7 @@ Retrieves all (non-deleted) tweets authored by the user with the given username,
 ```
 
 ### `GET     users/@{username}/tweets`
-Retrieves all (non-deleted) tweets authored by the user with the given username. This includes simple tweets, reposts, and replies. The tweets should appear in reverse-chronological order. If no active user with that username exists (deleted or never created), an error should be sent in lieu of a response.
+Retrieves all (non-deleted) tweets authored by the user with the given username. This includes simple tweets, reposts, and replies. The tweets will appear in reverse-chronological order. If no active user with that username exists (deleted or never created), an error will be sent in lieu of a response.
 
 #### Response
 ```javascript
@@ -210,9 +208,7 @@ Retrieves all (non-deleted) tweets authored by the user with the given username.
 ```
 
 ### `GET     users/@{username}/mentions`
-Retrieves all (non-deleted) tweets in which the user with the given username is mentioned. The tweets should appear in reverse-chronological order. If no active user with that username exists, an error should be sent in lieu of a response.
-
-A user is considered "mentioned" by a tweet if the tweet has `content` and the user's username appears in that content following a `@`.
+Retrieves all (non-deleted) tweets in which the user with the given username is mentioned. The tweets will appear in reverse-chronological order. If no active user with that username exists, an error will be sent in lieu of a response.
 
 #### Response
 ```javascript
@@ -220,7 +216,7 @@ A user is considered "mentioned" by a tweet if the tweet has `content` and the u
 ```
 
 ### `GET     users/@{username}/followers`
-Retrieves the followers of the user with the given username. Only active users should be included in the response. If no active user with the given username exists, an error should be sent in lieu of a response.
+Retrieves the active followers of the user with the given username. If no active user with the given username exists, an error will be sent in lieu of a response.
 
 #### Response
 ```javascript
@@ -228,7 +224,7 @@ Retrieves the followers of the user with the given username. Only active users s
 ```
 
 ### `GET     users/@{username}/following`
-Retrieves the users followed by the user with the given username. Only active users should be included in the response. If no active user with the given username exists, an error should be sent in lieu of a response.
+Retrieves the active users followed by the user with the given username. If no active user with the given username exists, an error will be sent in lieu of a response.
 
 #### Response
 ```javascript
@@ -244,9 +240,7 @@ Retrieves all hashtags tracked by the database.
 ```
 
 ### `GET     tags/{label}`
-Retrieves all (non-deleted) tweets tagged with the given hashtag label. The tweets should appear in reverse-chronological order. If no hashtag with the given label exists, an error should be sent in lieu of a response.
-
-A tweet is considered "tagged" by a hashtag if the tweet has `content` and the hashtag's label appears in that content following a `#`
+Retrieves all (non-deleted) tweets tagged with the given hashtag label. The tweets will appear in reverse-chronological order. If no hashtag with the given label exists, an error will be sent in lieu of a response.
 
 #### Response
 ```javascript
@@ -254,7 +248,7 @@ A tweet is considered "tagged" by a hashtag if the tweet has `content` and the h
 ```
 
 ### `GET     tweets`
-Retrieves all (non-deleted) tweets. The tweets should appear in reverse-chronological order.
+Retrieves all (non-deleted) tweets. The tweets will appear in reverse-chronological order.
 
 #### Response
 ```javascript
@@ -262,13 +256,9 @@ Retrieves all (non-deleted) tweets. The tweets should appear in reverse-chronolo
 ```
 
 ### `POST    tweets`
-Creates a new simple tweet, with the author set to the user identified by the credentials in the request body. If the given credentials do not match an active user in the database, an error should be sent in lieu of a response.
+Creates a new simple tweet, with the author set to the user identified by the credentials in the request body. If the given credentials do not match an active user in the database, an error will be sent in lieu of a response.
 
-The response should contain the newly-created tweet.
-
-Because this always creates a simple tweet, it must have a `content` property and may not have `inReplyTo` or `repostOf` properties.
-
-**IMPORTANT:** when a tweet with `content` is created, the server must process the tweet's content for `@{username}` mentions and `#{hashtag}` tags. There is no way to create hashtags or create mentions from the API, so this must be handled automatically!
+Because this always creates a simple tweet, it must have a `content` property.
 
 #### Request
 ```javascript
@@ -284,7 +274,7 @@ Because this always creates a simple tweet, it must have a `content` property an
 ```
 
 ### `GET     tweets/{id}`
-Retrieves a tweet with a given id. If no such tweet exists, or the given tweet is deleted, an error should be sent in lieu of a response.
+Retrieves a tweet with a given id. If no such tweet exists, or the given tweet is deleted, an error will be sent in lieu of a response.
 
 #### Response
 ```javascript
@@ -292,9 +282,7 @@ Retrieves a tweet with a given id. If no such tweet exists, or the given tweet i
 ```
 
 ### `DELETE  tweets/{id}`
-"Deletes" the tweet with the given id. If no such tweet exists or the provided credentials do not match author of the tweet, an error should be sent in lieu of a response. If a tweet is successfully "deleted", the response should contain the tweet data prior to deletion.
-
-**IMPORTANT:** This action should not actually drop any records from the database! Instead, develop a way to keep track of "deleted" tweets so that even if a tweet is deleted, data with relationships to it (like replies and reposts) are still intact.
+"Deletes" the tweet with the given id. If no such tweet exists or the provided credentials do not match author of the tweet, an error will be sent in lieu of a response. If a tweet is successfully "deleted", the response will contain the tweet data prior to deletion.
 
 #### Request
 ```javascript
@@ -307,7 +295,7 @@ Retrieves a tweet with a given id. If no such tweet exists, or the given tweet i
 ```
 
 ### `POST    tweets/{id}/like`
-Creates a "like" relationship between the tweet with the given id and the user whose credentials are provided by the request body. If the tweet is deleted or otherwise doesn't exist, or if the given credentials do not match an active user in the database, an error should be sent. Following successful completion of the operation, no response body is sent.
+Creates a "like" relationship between the tweet with the given id and the user whose credentials are provided by the request body. If the tweet is deleted or otherwise doesn't exist, or if the given credentials do not match an active user in the database, an error will be sent. Following successful completion of the operation, no response body is returned.
 
 #### Request
 ```javascript
@@ -315,13 +303,8 @@ Creates a "like" relationship between the tweet with the given id and the user w
 ```
 
 ### `POST    tweets/{id}/reply`
-Creates a reply tweet to the tweet with the given id. The author of the newly-created tweet should match the credentials provided by the request body. If the given tweet is deleted or otherwise doesn't exist, or if the given credentials do not match an active user in the database, an error should be sent in lieu of a response.
-
-Because this creates a reply tweet, content is not optional. Additionally, notice that the `inReplyTo` property is not provided by the request. The server must create that relationship.
-
-The response should contain the newly-created tweet.
-
-**IMPORTANT:** when a tweet with `content` is created, the server must process the tweet's content for `@{username}` mentions and `#{hashtag}` tags. There is no way to create hashtags or create mentions from the API, so this must be handled automatically!
+Creates a reply tweet to the tweet with the given id. If the given tweet is deleted or otherwise doesn't exist, or if the given credentials do not match an active user in the database, an error will be sent in lieu of a response.
+The response will contain the newly-created tweet.
 
 #### Request
 ```javascript
@@ -337,11 +320,11 @@ The response should contain the newly-created tweet.
 ```
 
 ### `POST    tweets/{id}/repost`
-Creates a repost of the tweet with the given id. The author of the repost should match the credentials provided in the request body. If the given tweet is deleted or otherwise doesn't exist, or the given credentials do not match an active user in the database, an error should be sent in lieu of a response.
+Creates a repost of the tweet with the given id. If the given tweet is deleted or otherwise doesn't exist, or the given credentials do not match an active user in the database, an error will be sent in lieu of a response.
 
-Because this creates a repost tweet, content is not allowed. Additionally, notice that the `repostOf` property is not provided by the request. The server must create that relationship.
+Because this creates a repost tweet, content is not allowed.
 
-The response should contain the newly-created tweet.
+The response will contain the newly-created tweet.
 
 #### Request
 ```javascript
@@ -354,9 +337,7 @@ The response should contain the newly-created tweet.
 ```
 
 ### `GET     tweets/{id}/tags`
-Retrieves the tags associated with the tweet with the given id. If that tweet is deleted or otherwise doesn't exist, an error should be sent in lieu of a response.
-
-**IMPORTANT** Remember that tags and mentions must be parsed by the server!
+Retrieves the tags associated with the tweet with the given id. If that tweet is deleted or otherwise doesn't exist, an error will be sent in lieu of a response.
 
 #### Response
 ```javascript
@@ -364,9 +345,7 @@ Retrieves the tags associated with the tweet with the given id. If that tweet is
 ```
 
 ### `GET     tweets/{id}/likes`
-Retrieves the active users who have liked the tweet with the given id. If that tweet is deleted or otherwise doesn't exist, an error should be sent in lieu of a response.
-
-Deleted users should be excluded from the response.
+Retrieves the active users who have liked the tweet with the given id. If that tweet is deleted or otherwise doesn't exist, an error will be sent in lieu of a response.
 
 #### Response
 ```javascript
@@ -374,9 +353,7 @@ Deleted users should be excluded from the response.
 ```
 
 ### `GET     tweets/{id}/context`
-Retrieves the context of the tweet with the given id. If that tweet is deleted or otherwise doesn't exist, an error should be sent in lieu of a response.
-
-**IMPORTANT:** While deleted tweets should not be included in the `before` and `after` properties of the result, transitive replies should. What that means is that if a reply to the target of the context is deleted, but there's another reply to the deleted reply, the deleted reply should be excluded but the other reply should remain.
+Retrieves the context of the tweet with the given id. If that tweet is deleted or otherwise doesn't exist, an error will be sent in lieu of a response.
 
 #### Response
 ```javascript
@@ -384,9 +361,7 @@ Retrieves the context of the tweet with the given id. If that tweet is deleted o
 ```
 
 ### `GET     tweets/{id}/replies`
-Retrieves the direct replies to the tweet with the given id. If that tweet is deleted or otherwise doesn't exist, an error should be sent in lieu of a response.
-
-Deleted replies to the tweet should be excluded from the response.
+Retrieves the direct replies to the tweet with the given id. If that tweet is deleted or otherwise doesn't exist, an error will be sent in lieu of a response.
 
 #### Response
 ```javascript
@@ -394,9 +369,7 @@ Deleted replies to the tweet should be excluded from the response.
 ```
 
 ### `GET     tweets/{id}/reposts`
-Retrieves the direct reposts of the tweet with the given id. If that tweet is deleted or otherwise doesn't exist, an error should be sent in lieu of a response.
-
-Deleted reposts of the tweet should be excluded from the response.
+Retrieves the direct reposts of the tweet with the given id. If that tweet is deleted or otherwise doesn't exist, an error will be sent in lieu of a response.
 
 #### Response
 ```javascript
@@ -404,11 +377,7 @@ Deleted reposts of the tweet should be excluded from the response.
 ```
 
 ### `GET     tweets/{id}/mentions`
-Retrieves the users mentioned in the tweet with the given id. If that tweet is deleted or otherwise doesn't exist, an error should be sent in lieu of a response.
-
-Deleted users should be excluded from the response.
-
-**IMPORTANT** Remember that tags and mentions must be parsed by the server!
+Retrieves the users mentioned in the tweet with the given id. If that tweet is deleted or otherwise doesn't exist, an error will be sent in lieu of a response.
 
 #### Response
 ```javascript
